@@ -2,11 +2,9 @@
 
 from __future__ import print_function
 
-from distutils.core import setup
-
-import sys
 import os
-from os.path import join
+import subprocess
+import sys
 
 DESCRIPTION = """
 pynfs
@@ -19,11 +17,12 @@ DIRS = ["xdr", "rpc", "nfs4.1", "nfs4.0"] # Order is important
 
 def setup(*args, **kwargs):
     cwd = os.getcwd()
-    command = " ".join(sys.argv)
     for dir in DIRS:
         print("\n\nMoving to %s" % dir )
-        os.chdir(join(cwd, dir))
-        os.system("python%s %s" % (sys.version[0], command))
+        os.chdir(os.path.join(cwd, dir))
+        rc = subprocess.call([sys.executable] + sys.argv)
+        if "clean" not in sys.argv and rc:
+            sys.exit(rc)
     os.chdir(cwd)
 
 setup(name = "pynfs",
