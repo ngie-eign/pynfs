@@ -6,6 +6,13 @@ import os
 import subprocess
 import sys
 
+try:
+    import ply
+except ImportError:
+    # Avoid confusing cascading failures due to how xdrgen is imported via
+    # setup.py files in subdirs.
+    sys.exit("You must install ply first.")
+
 DESCRIPTION = """
 pynfs
 ============
